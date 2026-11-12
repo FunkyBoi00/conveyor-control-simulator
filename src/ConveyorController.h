@@ -15,6 +15,18 @@ enum class ConveyorState
 class ConveyorController
 {
 public:
+    void processButtons(bool startPressed, bool stopPressed)
+    {
+        if (stopPressed)
+        {
+            stop();
+        }
+        else if (startPressed)
+        {
+            start();
+        }
+    }
+
     void start()
     {
         if (state == ConveyorState::STOPPED)

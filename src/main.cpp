@@ -33,6 +33,8 @@ int main()
     std::cout << "Commands: start, stop, status, sensor_on, "
                  "sensor_off, tick <ms>, exit\n";
     std::cout << "Simulation time advances only with tick.\n";
+    std::cout << "Commands: start, stop, both, status, sensor_on, "
+                 "sensor_off, tick <ms>, exit\n";
 
     while (std::cout << "> " && std::getline(std::cin, line))
     {
@@ -67,11 +69,15 @@ int main()
         }
         else if (command == "start")
         {
-            conveyor.start();
+            conveyor.processButtons(true, false);
         }
         else if (command == "stop")
         {
-            conveyor.stop();
+            conveyor.processButtons(false, true);
+        }
+        else if (command == "both")
+        {
+            conveyor.processButtons(true, true);
         }
         else if (command == "sensor_on")
         {

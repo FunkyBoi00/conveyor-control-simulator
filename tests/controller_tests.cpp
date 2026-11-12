@@ -145,6 +145,36 @@ int main()
               "Sensor must clear and activate again after START");
     }
 
+    {
+        ConveyorController conveyor;
+        conveyor.processButtons(true, true);
+
+        check(conveyor.getState() == ConveyorState::STOPPED,
+              "STOP overrides START while stopped");
+    }
+
+    {
+        ConveyorController conveyor;
+        conveyor.start();
+        conveyor.processButtons(true, true);
+
+        check(conveyor.getState() == ConveyorState::STOPPED,
+              "STOP overrides START while running");
+    }
+
+    {
+        ConveyorController conveyor;
+        conveyor.start();
+        conveyor.setPartSensor(true);
+        conveyor.advanceTime(1000);
+
+        conveyor.processButtons(true, true);
+        conveyor.advanceTime(2000);
+
+        check(conveyor.getState() == ConveyorState::STOPPED,
+              "Simultaneous STOP and START cancel pause");
+    }
+
     std::cout << "Failed tests: " << failedTests << '\n';
 
     return failedTests == 0 ? 0 : 1;                          // returns the programme’s exit code: 0 if all checks are successful, or 1 if an error occurs.
