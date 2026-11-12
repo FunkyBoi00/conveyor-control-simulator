@@ -1,9 +1,16 @@
+// Human-Machine interface communication
+// Yevhenii Shmonin
+// 12.11.2026
+// bugs: ~
+
 #include <iostream>
 #include <string>
 
+#include "ConveyorController.h"
+
 int main()
 {
-    bool motorRunning = false;
+    ConveyorController conveyor;
     std::string command;
 
     std::cout << "Conveyor Control Simulator\n";
@@ -17,11 +24,11 @@ int main()
         }
         else if (command == "start")
         {
-            motorRunning = true;
+            conveyor.start();
         }
         else if (command == "stop")
         {
-            motorRunning = false;
+            conveyor.stop();
         }
         else if (command != "status")
         {
@@ -30,7 +37,7 @@ int main()
         }
 
         std::cout << "Motor: "
-                  << (motorRunning ? "ON" : "OFF")
+                  << (conveyor.isRunning() ? "ON" : "OFF")
                   << '\n';
     }
 
