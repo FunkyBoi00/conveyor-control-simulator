@@ -30,11 +30,9 @@ int main()
     std::string line;
 
     std::cout << "Conveyor Control Simulator\n";
-    std::cout << "Commands: start, stop, status, sensor_on, "
-                 "sensor_off, tick <ms>, exit\n";
-    std::cout << "Simulation time advances only with tick.\n";
     std::cout << "Commands: start, stop, both, status, sensor_on, "
-                 "sensor_off, tick <ms>, exit\n";
+             "sensor_off, tick <ms>, exit\n";
+    std::cout << "Simulation time advances only with tick.\n";
 
     while (std::cout << "> " && std::getline(std::cin, line))
     {
@@ -70,14 +68,17 @@ int main()
         else if (command == "start")
         {
             conveyor.processButtons(true, false);
+            conveyor.processButtons(false, false);
         }
         else if (command == "stop")
         {
             conveyor.processButtons(false, true);
+            conveyor.processButtons(false, false);
         }
         else if (command == "both")
         {
             conveyor.processButtons(true, true);
+            conveyor.processButtons(false, false);
         }
         else if (command == "sensor_on")
         {

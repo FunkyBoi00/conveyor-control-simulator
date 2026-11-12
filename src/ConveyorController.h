@@ -17,11 +17,14 @@ class ConveyorController
 public:
     void processButtons(bool startPressed, bool stopPressed)
     {
+        const bool startRisingEdge = startPressed && !previousStart;
+        previousStart = startPressed;
+
         if (stopPressed)
         {
             stop();
         }
-        else if (startPressed)
+        else if (startRisingEdge)
         {
             start();
         }
@@ -86,5 +89,6 @@ private:
 
     ConveyorState state = ConveyorState::STOPPED;
     bool previousSensor = false;
+    bool previousStart = false;
     int remainingPauseMs = 0;
 };
