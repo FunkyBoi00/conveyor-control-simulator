@@ -175,6 +175,22 @@ int main()
               "Simultaneous STOP and START cancel pause");
     }
 
+    {
+        ConveyorController conveyor;
+
+        conveyor.processButtons(true, true);
+        conveyor.processButtons(true, false);
+
+        check(conveyor.getState() == ConveyorState::STOPPED,
+              "Held START cannot restart after STOP release");
+
+        conveyor.processButtons(false, false);
+        conveyor.processButtons(true, false);
+
+        check(conveyor.isRunning(),
+              "Fresh START press restarts after STOP");
+    }
+
     std::cout << "Failed tests: " << failedTests << '\n';
 
     return failedTests == 0 ? 0 : 1;                          // returns the programme’s exit code: 0 if all checks are successful, or 1 if an error occurs.
