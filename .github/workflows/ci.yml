@@ -1,0 +1,28 @@
+name: C++ Build and Tests
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download repository
+        uses: actions/checkout@v6
+
+      - name: Create build directory
+        run: mkdir -p build
+
+      - name: Build simulator
+        run: g++ -std=c++17 -Wall -Wextra -Wpedantic src/main.cpp -o build/conveyor
+
+      - name: Build tests
+        run: g++ -std=c++17 -Wall -Wextra -Wpedantic tests/controller_tests.cpp -o build/controller_tests
+
+      - name: Run tests
+        run: ./build/controller_tests
