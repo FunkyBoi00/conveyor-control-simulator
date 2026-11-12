@@ -69,6 +69,82 @@ int main()
               "START after STOP turns motor ON");
     }
 
+
+    {
+        ConveyorController conveyor;
+        conveyor.start();
+        conveyor.setPartSensor(true);
+
+        check(conveyor.getState() == ConveyorState::PAUSED
+                  && !conveyor.isRunning(),
+              "Sensor rising edge pauses motor");
+
+        conveyor.advanceTime(2999);
+        check(conveyor.getState() == ConveyorState::PAUSED,
+              "Pause remains active at 2999 ms");
+
+        conveyor.advanceTime(1);
+        check(conveyor.isRunning(),
+              "Motor resumes at 3000 ms");
+
+        conveyor.setPartSensor(true);
+        check(conveyor.isRunning(),
+              "Held sensor does not trigger another pause");
+
+        conveyor.setPartSensor(false);
+        conveyor.setPartSensor(true);
+        check(conveyor.getState() == ConveyorState::PAUSED,
+              "New sensor rising edge starts another pause");
+    }
+
+    {
+        ConveyorController conveyor;
+        conveyor.start();
+        conveyor.setPartSensor(true);
+        conveyor.advanceTime(1000);
+        conveyor.stop();
+        conveyor.advanceTime(2000);
+
+        check(conveyor.getState() == ConveyorState::STOPPED
+                  && !conveyor.isRunning(),
+              "STOP cancels pause and prevents automatic restart");
+
+        conveyor.start();
+        conveyor.advanceTime(5000);
+        check(conveyor.isRunning(),
+              "New START works after cancelled pause");
+    }
+
+    {
+        ConveyorController conveyor;
+        conveyor.start();
+        conveyor.setPartSensor(true);
+        conveyor.advanceTime(1000);
+        conveyor.start();
+
+        check(conveyor.getState() == ConveyorState::PAUSED,
+              "START cannot interrupt pause");
+
+        conveyor.advanceTime(2000);
+        check(conveyor.isRunning(),
+              "START during pause does not reset timer");
+    }
+
+    {
+        ConveyorController conveyor;
+        conveyor.setPartSensor(true);
+        conveyor.start();
+        conveyor.setPartSensor(true);
+
+        check(conveyor.isRunning(),
+              "Sensor already active at START does not pause motor");
+
+        conveyor.setPartSensor(false);
+        conveyor.setPartSensor(true);
+        check(conveyor.getState() == ConveyorState::PAUSED,
+              "Sensor must clear and activate again after START");
+    }
+
     std::cout << "Failed tests: " << failedTests << '\n';
 
     return failedTests == 0 ? 0 : 1;                          // returns the programme’s exit code: 0 if all checks are successful, or 1 if an error occurs.
