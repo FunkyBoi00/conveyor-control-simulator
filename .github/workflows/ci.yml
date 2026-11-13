@@ -26,3 +26,6 @@ jobs:
 
       - name: Run tests
         run: ./build/controller_tests
+
+      - name: Check pause scenario
+        run: bash tests/check-pause.sh
