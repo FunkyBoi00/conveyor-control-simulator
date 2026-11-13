@@ -1,0 +1,4 @@
+> State: RUNNING | Motor: ON
+> State: PAUSED | Motor: OFF
+> State: PAUSED | Motor: OFF
+> State: RUNNING | Motor: ON

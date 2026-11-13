@@ -1,0 +1,5 @@
+start
+sensor_on
+tick 2999
+tick 1
+exit
