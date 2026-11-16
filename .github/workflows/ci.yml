@@ -15,17 +15,5 @@ jobs:
       - name: Download repository
         uses: actions/checkout@v6
 
-      - name: Create build directory
-        run: mkdir -p build
-
-      - name: Build simulator
-        run: g++ -std=c++17 -Wall -Wextra -Wpedantic src/main.cpp -o build/conveyor
-
-      - name: Build tests
-        run: g++ -std=c++17 -Wall -Wextra -Wpedantic tests/controller_tests.cpp -o build/controller_tests
-
-      - name: Run tests
-        run: ./build/controller_tests
-
-      - name: Check pause scenario
-        run: bash tests/check-pause.sh
+      - name: Build and test on Linux
+        run: bash scripts/test-linux.sh
